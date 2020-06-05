@@ -8,7 +8,7 @@ import (
 	"net"
 	"strconv"
 
-	"github.com/Dreamacro/clash/component/auth"
+	"github.com/XinSSS/clash/component/auth"
 )
 
 // Error represents a SOCKS error
@@ -20,6 +20,8 @@ func (err Error) Error() string {
 
 // Command is request commands as defined in RFC 1928 section 4.
 type Command = uint8
+
+const Version = 5
 
 // SOCKS request commands as defined in RFC 1928 section 4.
 const (

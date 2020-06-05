@@ -3,7 +3,7 @@ package redir
 import (
 	"net"
 
-	"github.com/Dreamacro/clash/common/pool"
+	"github.com/XinSSS/clash/common/pool"
 )
 
 type packet struct {

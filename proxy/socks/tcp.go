@@ -5,12 +5,12 @@ import (
 	"io/ioutil"
 	"net"
 
-	adapters "github.com/Dreamacro/clash/adapters/inbound"
-	"github.com/Dreamacro/clash/component/socks5"
-	C "github.com/Dreamacro/clash/constant"
-	"github.com/Dreamacro/clash/log"
-	authStore "github.com/Dreamacro/clash/proxy/auth"
-	"github.com/Dreamacro/clash/tunnel"
+	adapters "github.com/XinSSS/clash/adapters/inbound"
+	"github.com/XinSSS/clash/component/socks5"
+	C "github.com/XinSSS/clash/constant"
+	"github.com/XinSSS/clash/log"
+	authStore "github.com/XinSSS/clash/proxy/auth"
+	"github.com/XinSSS/clash/tunnel"
 )
 
 type SockListener struct {
@@ -36,7 +36,7 @@ func NewSocksProxy(addr string) (*SockListener, error) {
 				}
 				continue
 			}
-			go handleSocks(c)
+			go HandleSocks(c)
 		}
 	}()
 
@@ -45,23 +45,25 @@ func NewSocksProxy(addr string) (*SockListener, error) {
 
 func (l *SockListener) Close() {
 	l.closed = true
-	l.Listener.Close()
+	_ = l.Listener.Close()
 }
 
 func (l *SockListener) Address() string {
 	return l.address
 }
 
-func handleSocks(conn net.Conn) {
+func HandleSocks(conn net.Conn) {
 	target, command, err := socks5.ServerHandshake(conn, authStore.Authenticator())
 	if err != nil {
-		conn.Close()
+		_ = conn.Close()
 		return
 	}
-	conn.(*net.TCPConn).SetKeepAlive(true)
+	if c, ok := conn.(*net.TCPConn); ok {
+		c.SetKeepAlive(true)
+	}
 	if command == socks5.CmdUDPAssociate {
 		defer conn.Close()
-		io.Copy(ioutil.Discard, conn)
+		_, _ = io.Copy(ioutil.Discard, conn)
 		return
 	}
 	tunnel.Add(adapters.NewSocket(target, conn, C.SOCKS))

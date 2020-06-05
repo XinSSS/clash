@@ -6,18 +6,18 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/Dreamacro/clash/adapters/provider"
-	"github.com/Dreamacro/clash/component/auth"
-	"github.com/Dreamacro/clash/component/dialer"
-	trie "github.com/Dreamacro/clash/component/domain-trie"
-	"github.com/Dreamacro/clash/component/resolver"
-	"github.com/Dreamacro/clash/config"
-	C "github.com/Dreamacro/clash/constant"
-	"github.com/Dreamacro/clash/dns"
-	"github.com/Dreamacro/clash/log"
-	P "github.com/Dreamacro/clash/proxy"
-	authStore "github.com/Dreamacro/clash/proxy/auth"
-	"github.com/Dreamacro/clash/tunnel"
+	"github.com/XinSSS/clash/adapters/provider"
+	"github.com/XinSSS/clash/component/auth"
+	"github.com/XinSSS/clash/component/dialer"
+	trie "github.com/XinSSS/clash/component/domain-trie"
+	"github.com/XinSSS/clash/component/resolver"
+	"github.com/XinSSS/clash/config"
+	C "github.com/XinSSS/clash/constant"
+	"github.com/XinSSS/clash/dns"
+	"github.com/XinSSS/clash/log"
+	P "github.com/XinSSS/clash/proxy"
+	authStore "github.com/XinSSS/clash/proxy/auth"
+	"github.com/XinSSS/clash/tunnel"
 )
 
 // forward compatibility before 1.0
@@ -99,6 +99,7 @@ func GetGeneral() *config.General {
 		Port:           ports.Port,
 		SocksPort:      ports.SocksPort,
 		RedirPort:      ports.RedirPort,
+		MixedPort:      ports.MixedPort,
 		Authentication: authenticator,
 		AllowLan:       P.AllowLan(),
 		BindAddress:    P.BindAddress(),
@@ -185,6 +186,10 @@ func updateGeneral(general *config.General) {
 
 	if err := P.ReCreateRedir(general.RedirPort); err != nil {
 		log.Errorln("Start Redir server error: %s", err.Error())
+	}
+
+	if err := P.ReCreateMixed(general.MixedPort); err != nil {
+		log.Errorln("Start Mixed(http and socks5) server error: %s", err.Error())
 	}
 }
 

@@ -3,12 +3,12 @@ package socks
 import (
 	"net"
 
-	adapters "github.com/Dreamacro/clash/adapters/inbound"
-	"github.com/Dreamacro/clash/common/pool"
-	"github.com/Dreamacro/clash/common/sockopt"
-	"github.com/Dreamacro/clash/component/socks5"
-	C "github.com/Dreamacro/clash/constant"
-	"github.com/Dreamacro/clash/tunnel"
+	adapters "github.com/XinSSS/clash/adapters/inbound"
+	"github.com/XinSSS/clash/common/pool"
+	"github.com/XinSSS/clash/common/sockopt"
+	"github.com/XinSSS/clash/component/socks5"
+	C "github.com/XinSSS/clash/constant"
+	"github.com/XinSSS/clash/tunnel"
 )
 
 type SockUDPListener struct {
@@ -65,9 +65,9 @@ func handleSocksUDP(pc net.PacketConn, buf []byte, addr net.Addr) {
 	}
 	packet := &packet{
 		pc:      pc,
-		rAddr:   addr,
-		payload: payload,
-		bufRef:  buf,
+		rAddr:      addr,
+		payload:    payload,
+		bufRef:     buf,
 	}
 	tunnel.AddPacket(adapters.NewPacket(target, packet, C.SOCKS))
 }

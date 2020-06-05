@@ -8,17 +8,17 @@ import (
 	"os"
 	"strings"
 
-	"github.com/Dreamacro/clash/adapters/outbound"
-	"github.com/Dreamacro/clash/adapters/outboundgroup"
-	"github.com/Dreamacro/clash/adapters/provider"
-	"github.com/Dreamacro/clash/component/auth"
-	trie "github.com/Dreamacro/clash/component/domain-trie"
-	"github.com/Dreamacro/clash/component/fakeip"
-	C "github.com/Dreamacro/clash/constant"
-	"github.com/Dreamacro/clash/dns"
-	"github.com/Dreamacro/clash/log"
-	R "github.com/Dreamacro/clash/rules"
-	T "github.com/Dreamacro/clash/tunnel"
+	"github.com/XinSSS/clash/adapters/outbound"
+	"github.com/XinSSS/clash/adapters/outboundgroup"
+	"github.com/XinSSS/clash/adapters/provider"
+	"github.com/XinSSS/clash/component/auth"
+	trie "github.com/XinSSS/clash/component/domain-trie"
+	"github.com/XinSSS/clash/component/fakeip"
+	C "github.com/XinSSS/clash/constant"
+	"github.com/XinSSS/clash/dns"
+	"github.com/XinSSS/clash/log"
+	R "github.com/XinSSS/clash/rules"
+	T "github.com/XinSSS/clash/tunnel"
 
 	yaml "gopkg.in/yaml.v2"
 )
@@ -28,6 +28,7 @@ type General struct {
 	Port               int          `json:"port"`
 	SocksPort          int          `json:"socks-port"`
 	RedirPort          int          `json:"redir-port"`
+	MixedPort          int          `json:"mixed-port"`
 	Authentication     []string     `json:"authentication"`
 	AllowLan           bool         `json:"allow-lan"`
 	BindAddress        string       `json:"bind-address"`
@@ -97,6 +98,7 @@ type RawConfig struct {
 	Port               int          `yaml:"port"`
 	SocksPort          int          `yaml:"socks-port"`
 	RedirPort          int          `yaml:"redir-port"`
+	MixedPort          int          `yaml:"mixed-port"`
 	Authentication     []string     `yaml:"authentication"`
 	AllowLan           bool         `yaml:"allow-lan"`
 	BindAddress        string       `yaml:"bind-address"`
@@ -217,6 +219,7 @@ func parseGeneral(cfg *RawConfig) (*General, error) {
 	port := cfg.Port
 	socksPort := cfg.SocksPort
 	redirPort := cfg.RedirPort
+	mixedPort := cfg.MixedPort
 	allowLan := cfg.AllowLan
 	bindAddress := cfg.BindAddress
 	externalController := cfg.ExternalController
@@ -237,6 +240,7 @@ func parseGeneral(cfg *RawConfig) (*General, error) {
 		Port:               port,
 		SocksPort:          socksPort,
 		RedirPort:          redirPort,
+		MixedPort:          mixedPort,
 		AllowLan:           allowLan,
 		BindAddress:        bindAddress,
 		Mode:               mode,

@@ -8,12 +8,12 @@ import (
 	"strings"
 	"time"
 
-	adapters "github.com/Dreamacro/clash/adapters/inbound"
-	"github.com/Dreamacro/clash/common/cache"
-	"github.com/Dreamacro/clash/component/auth"
-	"github.com/Dreamacro/clash/log"
-	authStore "github.com/Dreamacro/clash/proxy/auth"
-	"github.com/Dreamacro/clash/tunnel"
+	adapters "github.com/XinSSS/clash/adapters/inbound"
+	"github.com/XinSSS/clash/common/cache"
+	"github.com/XinSSS/clash/component/auth"
+	"github.com/XinSSS/clash/log"
+	authStore "github.com/XinSSS/clash/proxy/auth"
+	"github.com/XinSSS/clash/tunnel"
 )
 
 type HttpListener struct {
@@ -41,7 +41,7 @@ func NewHttpProxy(addr string) (*HttpListener, error) {
 				}
 				continue
 			}
-			go handleConn(c, hl.cache)
+			go HandleConn(c, hl.cache)
 		}
 	}()
 
@@ -50,7 +50,7 @@ func NewHttpProxy(addr string) (*HttpListener, error) {
 
 func (l *HttpListener) Close() {
 	l.closed = true
-	l.Listener.Close()
+	_ = l.Listener.Close()
 }
 
 func (l *HttpListener) Address() string {
@@ -69,11 +69,11 @@ func canActivate(loginStr string, authenticator auth.Authenticator, cache *cache
 	return
 }
 
-func handleConn(conn net.Conn, cache *cache.Cache) {
+func HandleConn(conn net.Conn, cache *cache.Cache) {
 	br := bufio.NewReader(conn)
 	request, err := http.ReadRequest(br)
 	if err != nil || request.URL.Host == "" {
-		conn.Close()
+		_ = conn.Close()
 		return
 	}
 
@@ -81,12 +81,12 @@ func handleConn(conn net.Conn, cache *cache.Cache) {
 	if authenticator != nil {
 		if authStrings := strings.Split(request.Header.Get("Proxy-Authorization"), " "); len(authStrings) != 2 {
 			_, err = conn.Write([]byte("HTTP/1.1 407 Proxy Authentication Required\r\nProxy-Authenticate: Basic\r\n\r\n"))
-			conn.Close()
+			_ = conn.Close()
 			return
 		} else if !canActivate(authStrings[1], authenticator, cache) {
-			conn.Write([]byte("HTTP/1.1 403 Forbidden\r\n\r\n"))
+			_, _ = conn.Write([]byte("HTTP/1.1 403 Forbidden\r\n\r\n"))
 			log.Infoln("Auth failed from %s", conn.RemoteAddr().String())
-			conn.Close()
+			_ = conn.Close()
 			return
 		}
 	}

@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	C "github.com/Dreamacro/clash/constant"
+	C "github.com/XinSSS/clash/constant"
 )
 
 const (

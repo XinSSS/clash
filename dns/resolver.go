@@ -10,10 +10,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Dreamacro/clash/common/cache"
-	"github.com/Dreamacro/clash/common/picker"
-	"github.com/Dreamacro/clash/component/fakeip"
-	"github.com/Dreamacro/clash/component/resolver"
+	"github.com/XinSSS/clash/common/cache"
+	"github.com/XinSSS/clash/common/picker"
+	"github.com/XinSSS/clash/component/fakeip"
+	"github.com/XinSSS/clash/component/resolver"
 
 	D "github.com/miekg/dns"
 	"golang.org/x/sync/singleflight"

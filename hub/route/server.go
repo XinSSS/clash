@@ -7,9 +7,9 @@ import (
 	"strings"
 	"time"
 
-	C "github.com/Dreamacro/clash/constant"
-	"github.com/Dreamacro/clash/log"
-	T "github.com/Dreamacro/clash/tunnel"
+	C "github.com/XinSSS/clash/constant"
+	"github.com/XinSSS/clash/log"
+	T "github.com/XinSSS/clash/tunnel"
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/cors"
@@ -62,11 +62,13 @@ func Start(addr string, secret string) {
 
 		r.Get("/", hello)
 		r.Get("/logs", getLogs)
+		r.Get("/version", version)
 		r.Get("/traffic", traffic)
 		r.Get("/version", version)
 		r.Mount("/configs", configRouter())
 		r.Mount("/proxies", proxyRouter())
 		r.Mount("/rules", ruleRouter())
+		r.Mount("/sysproxy", systemProxySettingRouter())
 		r.Mount("/connections", connectionRouter())
 		r.Mount("/providers/proxies", proxyProviderRouter())
 	})

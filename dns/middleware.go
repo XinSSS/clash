@@ -3,8 +3,8 @@ package dns
 import (
 	"strings"
 
-	"github.com/Dreamacro/clash/component/fakeip"
-	"github.com/Dreamacro/clash/log"
+	"github.com/XinSSS/clash/component/fakeip"
+	"github.com/XinSSS/clash/log"
 
 	D "github.com/miekg/dns"
 )
@@ -79,7 +79,6 @@ func compose(middlewares []middleware, endpoint handler) handler {
 		middleware := middlewares[i]
 		h = middleware(h)
 	}
-
 	return h
 }
 

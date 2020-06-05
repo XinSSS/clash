@@ -8,10 +8,10 @@ import (
 	"strings"
 	"time"
 
-	adapters "github.com/Dreamacro/clash/adapters/inbound"
-	C "github.com/Dreamacro/clash/constant"
+	adapters "github.com/XinSSS/clash/adapters/inbound"
+	C "github.com/XinSSS/clash/constant"
 
-	"github.com/Dreamacro/clash/common/pool"
+	"github.com/XinSSS/clash/common/pool"
 )
 
 func handleHTTP(request *adapters.HTTPAdapter, outbound net.Conn) {
